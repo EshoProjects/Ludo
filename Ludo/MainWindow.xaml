@@ -147,7 +147,6 @@
             
             <!-- Display Dice with Graphics -->
             <Image Name="DiceImage" Width="50" Height="50" HorizontalAlignment="Center"/>
-            <Button Content="Move Red Player" Width="100" Height="50" Click="MoveRedPlayer_Click"/>
         </StackPanel>
     </Grid>
 </Window>
