@@ -4,67 +4,147 @@
         Title="Ludo Game" Height="800" Width="800">
     <Grid>
         <!-- Ludo Game Board -->
-        <Canvas Name="LudoCanvas" Background="White" Height="600" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Canvas Name="LudoCanvas" Background="RosyBrown" Height="600" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <!-- Central Cross (Goal Area) -->
-            <Polygon Points="300,300 250,350 350,350" Fill="Yellow" />
+            <Polygon Points="300,300 250,350 350,350" Fill="Red" />
             <Polygon Points="300,300 350,350 350,250" Fill="Green" />
-            <Polygon Points="300,300 250,250 350,250" Fill="Red" />
+            <Polygon Points="300,300 250,250 350,250" Fill="Yellow" />
             <Polygon Points="300,300 250,250 250,350" Fill="Blue" />
 
-            <!-- Player Bases -->
-            <!-- Red Base (Top-Left) -->
-            <Rectangle Fill="Red" Width="200" Height="200" Canvas.Left="0" Canvas.Top="0"/>
-            <Ellipse Name="RedPlayer1" Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="30" Canvas.Top="30"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="120" Canvas.Top="30"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="30" Canvas.Top="120"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="120" Canvas.Top="120"/>
+            <!-- Player Bases with Outer Square -->
+            <!-- Red Base (Bottom-Left Corner) -->
+            <Canvas Canvas.Left="0" Canvas.Top="400">
+                <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Red" StrokeThickness="5" HorizontalAlignment="Center" Canvas.Top="-37" VerticalAlignment="Top"/>
+                <Ellipse Fill="Red" Width="230" Height="230" Canvas.Left="5" Canvas.Top="-32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="50" Canvas.Top="15" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="148" Canvas.Top="15"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="50" Canvas.Top="109" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="148" Canvas.Top="109"/>
+            </Canvas>
 
-            <!-- Green Base (Top-Right) -->
-            <Rectangle Fill="Green" Width="200" Height="200" Canvas.Left="400" Canvas.Top="0"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="430" Canvas.Top="30"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="520" Canvas.Top="30"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="430" Canvas.Top="120"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="520" Canvas.Top="120"/>
+            <!-- Green Base (Top-Right Corner) -->
+            <Canvas Canvas.Left="400" Canvas.Top="0">
+                <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Yellow" StrokeThickness="5" HorizontalAlignment="Left" Canvas.Left="-40" VerticalAlignment="Center"/>
+                <Ellipse Fill="Yellow" Width="230" Height="230" Canvas.Left="-35" Canvas.Top="5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="21" Canvas.Top="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="108" Canvas.Top="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="21" Canvas.Top="140" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="108" Canvas.Top="140" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Canvas>
 
-            <!-- Blue Base (Bottom-Left) -->
-            <Rectangle Fill="Blue" Width="200" Height="200" Canvas.Left="0" Canvas.Top="400"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="30" Canvas.Top="430"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="120" Canvas.Top="430"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="30" Canvas.Top="520"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="120" Canvas.Top="520"/>
+            <!-- Blue Base (Top-Left Corner) -->
+            <Canvas Canvas.Left="0" Canvas.Top="0">
+                <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Blue" StrokeThickness="5"/>
+                <Ellipse Fill="Blue" Width="230" Height="230" Canvas.Left="5" Canvas.Top="5"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="50" Canvas.Top="50"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="140" Canvas.Top="50"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="50" Canvas.Top="140"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="140" Canvas.Top="140"/>
+            </Canvas>
 
-            <!-- Yellow Base (Bottom-Right) -->
-            <Rectangle Fill="Yellow" Width="200" Height="200" Canvas.Left="400" Canvas.Top="400"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="430" Canvas.Top="430"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="520" Canvas.Top="430"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="430" Canvas.Top="520"/>
-            <Ellipse Width="50" Height="50" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="520" Canvas.Top="520"/>
+            <!-- Yellow Base (Bottom-Right Corner) -->
+            <Canvas Canvas.Left="400" Canvas.Top="400">
+                <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Green" StrokeThickness="5" Canvas.Left="-41" Canvas.Top="-40"/>
+                <Ellipse Fill="Green" Width="230" Height="230" Canvas.Left="-36" Canvas.Top="-35"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="12" Canvas.Top="10"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="104" Canvas.Top="10"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="12" Canvas.Top="100"/>
+                <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="104" Canvas.Top="100"/>
+            </Canvas>
 
-            <!-- Paths (Between Player Squares, Connected to Goal Area) -->
-            <!-- Red Path -->
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="200" Canvas.Top="50"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="230" Canvas.Top="50"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="260" Canvas.Top="50"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="290" Canvas.Top="50"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="320" Canvas.Top="50"/>
+            <!-- Paths for Players Leading to Center -->
+            <!-- Red Path (Bottom Side Leading to Center) -->
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="240" Canvas.Top="510"/>
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="470"/>
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="510"/>
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="430"/>
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="390"/>
+            <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="350"/>
 
-            <!-- Red Home Stretch to Goal -->
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="300" Canvas.Top="120"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="300" Canvas.Top="150"/>
-            <Rectangle Width="30" Height="30" Fill="Red" Stroke="Black" Canvas.Left="300" Canvas.Top="180"/>
+            <!-- Green Path (Right Side Leading to Center) -->
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="510" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="510" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="470" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="430" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="390" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="350" Canvas.Top="282"/>
 
-            <!-- Safe Zones -->
-            <Polygon Points="200,300 275,325 200,325" Fill="Gold" Canvas.Left="160" Canvas.Top="160"/>
-            <Polygon Points="300,300 325,325 325,300" Fill="Gold" Canvas.Left="420" Canvas.Top="160"/>
-            <Polygon Points="300,300 325,325 325,300" Fill="Gold" Canvas.Left="420" Canvas.Top="420"/>
-            <Polygon Points="200,300 275,325 200,325" Fill="Gold" Canvas.Left="160" Canvas.Top="420"/>
+            <!-- Blue Path (Left Side Leading to Center) -->
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="50" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="130" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="170" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="210" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="90" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="50" Canvas.Top="282"/>
 
+            <!-- Yellow Path (Top Side Leading to Center) -->
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="320" Canvas.Top="50"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="50"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="90"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="130"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="170"/>
+            <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="210"/>
+
+            <!-- Grey Path (Complete Path Around the Board) -->
+            <!-- Top Path -->
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="170"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="210"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="130"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="90"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="50"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="10"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="280" Canvas.Top="10"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="10"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="90"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="130"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="170"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="210"/>
+
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="350" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="390" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="430" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="470" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="510" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="550" Canvas.Top="242" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="550" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="550" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="470" Canvas.Top="322"/>
+
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="430" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="390" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="350" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="350"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="390"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="430"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="470"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="510"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="550"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="280" Canvas.Top="550"/>
+
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="550"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="470"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="430"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="390"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="350"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="210" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="170" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="130" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="90" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="50" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="10" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="10" Canvas.Top="282"/>
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="10" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="LightGray" Stroke="Black" Canvas.Left="90" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="LightGray" Stroke="Black" Canvas.Left="130" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="LightGray" Stroke="Black" Canvas.Left="170" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="LightGray" Stroke="Black" Canvas.Left="210" Canvas.Top="242"/>
         </Canvas>
 
         <!-- Dice and Player Turn Section -->
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
             <TextBlock Name="CurrentPlayerText" FontSize="24" Text="Current Player: Red" HorizontalAlignment="Center"/>
+            
             <!-- Display Dice with Graphics -->
             <Image Name="DiceImage" Width="50" Height="50" HorizontalAlignment="Center"/>
             <Button Content="Move Red Player" Width="100" Height="50" Click="MoveRedPlayer_Click"/>
