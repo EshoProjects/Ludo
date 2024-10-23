@@ -10,12 +10,12 @@ namespace LudoGame
         private int _diceValue;
         private int _currentPlayer = 1; // 1: Red, 2: Yellow, 3: Blue, 4: Green
 
-        private class Player
+        public class Player
         {
-            public Point[] Path { get; set; }    // Path of the player pieces
-            public Ellipse[] Pieces { get; set; } // Ellipse references for the player's pieces
-            public int[] PiecePositions { get; set; } // Piece positions on the path
-            public int GoalCount { get; set; } = 0;  // Count of pieces that have reached the goal
+            public Point[] Path { get; set; } = Array.Empty<Point>();  // Initialize with an empty array
+            public Ellipse[] Pieces { get; set; }
+            public int[] PiecePositions { get; set; }
+            public int GoalCount { get; set; } = 0;
 
             public Player(int pieceCount)
             {
@@ -27,6 +27,7 @@ namespace LudoGame
                 }
             }
         }
+
 
         private Player redPlayer, yellowPlayer, bluePlayer, greenPlayer;
 
@@ -214,7 +215,7 @@ namespace LudoGame
                 2 => yellowPlayer,
                 3 => bluePlayer,
                 4 => greenPlayer,
-                _ => null
+                _ => throw new InvalidOperationException("Invalid current player") // Handle invalid cases
             };
         }
 
