@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace LudoGame
@@ -11,80 +10,91 @@ namespace LudoGame
         private int _diceValue;
         private int _currentPlayer = 1; // 1: Red, 2: Yellow, 3: Blue, 4: Green
 
-        // Define a class for player data to reduce redundancy
         private class Player
         {
-            public Point[] Path { get; set; }
-            public Ellipse Piece { get; set; }
-            public int[] PiecePositions { get; set; }
-            public int GoalCount { get; set; } = 0;
+            public Point[] Path { get; set; }    // Path of the player pieces
+            public Ellipse[] Pieces { get; set; } // Ellipse references for the player's pieces
+            public int[] PiecePositions { get; set; } // Piece positions on the path
+            public int GoalCount { get; set; } = 0;  // Count of pieces that have reached the goal
+
+            public Player(int pieceCount)
+            {
+                Pieces = new Ellipse[pieceCount];
+                PiecePositions = new int[pieceCount];
+                for (int i = 0; i < pieceCount; i++)
+                {
+                    PiecePositions[i] = -1; // Initially, all pieces are off the board
+                }
+            }
         }
 
         private Player redPlayer, yellowPlayer, bluePlayer, greenPlayer;
 
-        public Ellipse GreenPiece1 { get; private set; }
-        public Ellipse BluePiece1 { get; private set; }
-        public Ellipse YellowPiece1 { get; private set; }
-        public Ellipse RedPiece1 { get; private set; }
-
         public MainWindow()
         {
-            InitializeComponent();
             InitializePlayers();
             UpdateCurrentPlayerText();
-            UpdateDiceGraphic(1); // Initialize the dice graphic to show "1"
         }
 
+        // Initialize players and their paths
         private void InitializePlayers()
         {
-            redPlayer = new Player
-            {
-                Path = new Point[] { new Point(100, 200), new Point(120, 200), new Point(140, 200), new Point(160, 200), new Point(180, 200), new Point(200, 180) },
-                Piece = RedPiece1,
-                PiecePositions = new int[] { -1 } // -1 means not yet on board
-            };
+            redPlayer = new Player(4);
+            yellowPlayer = new Player(4);
+            bluePlayer = new Player(4);
+            greenPlayer = new Player(4);
 
-            yellowPlayer = new Player
-            {
-                Path = new Point[] { new Point(300, 100), new Point(300, 120), new Point(300, 140), new Point(300, 160), new Point(300, 180), new Point(280, 200) },
-                Piece = YellowPiece1,
-                PiecePositions = new int[] { -1 }
-            };
+            // Link UI pieces to player data
+            redPlayer.Pieces[0] = RedPiece1;
+            redPlayer.Pieces[1] = RedPiece2;
+            redPlayer.Pieces[2] = RedPiece3;
+            redPlayer.Pieces[3] = RedPiece4;
 
-            bluePlayer = new Player
-            {
-                Path = new Point[] { new Point(100, 300), new Point(120, 300), new Point(140, 300), new Point(160, 300), new Point(180, 300), new Point(200, 320) },
-                Piece = BluePiece1,
-                PiecePositions = new int[] { -1 }
-            };
+            yellowPlayer.Pieces[0] = YellowPiece1;
+            yellowPlayer.Pieces[1] = YellowPiece2;
+            yellowPlayer.Pieces[2] = YellowPiece3;
+            yellowPlayer.Pieces[3] = YellowPiece4;
 
-            greenPlayer = new Player
-            {
-                Path = new Point[] { new Point(300, 300), new Point(300, 320), new Point(300, 340), new Point(300, 360), new Point(300, 380), new Point(280, 400) },
-                Piece = GreenPiece1,
-                PiecePositions = new int[] { -1 }
-            };
+            bluePlayer.Pieces[0] = BluePiece1;
+            bluePlayer.Pieces[1] = BluePiece2;
+            bluePlayer.Pieces[2] = BluePiece3;
+            bluePlayer.Pieces[3] = BluePiece4;
+
+            greenPlayer.Pieces[0] = GreenPiece1;
+            greenPlayer.Pieces[1] = GreenPiece2;
+            greenPlayer.Pieces[2] = GreenPiece3;
+            greenPlayer.Pieces[3] = GreenPiece4;
+
+            // Define paths for each player (simplified paths)
+            redPlayer.Path = new Point[] { new Point(50, 400), new Point(100, 400), new Point(150, 400), new Point(150, 350) };
+            yellowPlayer.Path = new Point[] { new Point(400, 50), new Point(450, 100), new Point(500, 150) };
+            bluePlayer.Path = new Point[] { new Point(50, 50), new Point(100, 50), new Point(150, 50) };
+            greenPlayer.Path = new Point[] { new Point(400, 400), new Point(450, 450), new Point(500, 500) };
         }
 
-        // Dice roll event handler
+        // Roll dice and trigger movement
         private void RollDice_Click(object sender, RoutedEventArgs e)
         {
-            _diceValue = _random.Next(1, 7); // Generate a number between 1 and 6
-            UpdateDiceGraphic(_diceValue);
-            MovePlayerPiece();
+            _diceValue = _random.Next(1, 7); // Generate dice roll between 1 and 6
+            UpdateDiceGraphic(_diceValue);   // Update the dice roll display
+
+            // Example: Move first red piece if 6 is rolled
+            if (_diceValue == 6)
+            {
+                MovePlayerPiece(0); // Moves the first red piece (as an example)
+            }
         }
 
-        // Update the dice graphic based on the roll
+        // Update the text to reflect dice result
         private void UpdateDiceGraphic(int diceValue)
         {
-            string diceImagePath = $"Images/dice{diceValue}.png"; // Ensure these images exist
-            DiceImage.Source = new BitmapImage(new Uri(diceImagePath, UriKind.Relative));
+            DiceResultText.Text = $"Roll: {diceValue}";
         }
 
-        // Animate piece movement
+        // Animate the movement of a piece
         private void AnimatePieceMovement(Ellipse piece, Point startPosition, Point endPosition)
         {
-            double duration = 0.5; // Animation duration in seconds
+            double duration = 0.5; // Time for animation
 
             DoubleAnimation moveX = new DoubleAnimation
             {
@@ -113,7 +123,7 @@ namespace LudoGame
             storyboard.Begin();
         }
 
-        // Update the current player's turn text
+        // Update the current player's text
         private void UpdateCurrentPlayerText()
         {
             switch (_currentPlayer)
@@ -134,35 +144,68 @@ namespace LudoGame
         }
 
         // Move player piece based on dice roll
-        private void MovePlayerPiece()
+        private void MovePlayerPiece(int pieceIndex)
         {
             Player currentPlayer = GetCurrentPlayer();
 
-            if (currentPlayer.PiecePositions[0] == -1 && _diceValue == 6)
+            // If the piece is still in the starting area, it can only move out if a 6 is rolled
+            if (currentPlayer.PiecePositions[pieceIndex] == -1)
             {
-                currentPlayer.PiecePositions[0] = 0;
-                AnimatePieceMovement(currentPlayer.Piece, new Point(30, 30), currentPlayer.Path[0]);
-            }
-            else if (currentPlayer.PiecePositions[0] != -1)
-            {
-                int newPosition = currentPlayer.PiecePositions[0] + _diceValue;
-                if (newPosition < currentPlayer.Path.Length)
+                if (_diceValue == 6)
                 {
-                    Point startPosition = currentPlayer.Path[currentPlayer.PiecePositions[0]];
-                    Point endPosition = currentPlayer.Path[newPosition];
-                    AnimatePieceMovement(currentPlayer.Piece, startPosition, endPosition);
-                    currentPlayer.PiecePositions[0] = newPosition;
+                    currentPlayer.PiecePositions[pieceIndex] = 0; // Move out of starting area
+                    AnimatePieceMovement(currentPlayer.Pieces[pieceIndex], new Point(30, 30), currentPlayer.Path[0]);
                 }
                 else
                 {
-                    currentPlayer.GoalCount++;
+                    return; // Can't move if the dice roll isn't 6
                 }
             }
+            else
+            {
+                // Move the piece along the path
+                int newPosition = currentPlayer.PiecePositions[pieceIndex] + _diceValue;
 
-            CheckForWin(currentPlayer);
-            NextTurn();
+                // Make sure the new position is within bounds
+                if (newPosition < currentPlayer.Path.Length)
+                {
+                    Point startPosition = currentPlayer.Path[currentPlayer.PiecePositions[pieceIndex]];
+                    Point endPosition = currentPlayer.Path[newPosition];
+
+                    AnimatePieceMovement(currentPlayer.Pieces[pieceIndex], startPosition, endPosition);
+                    currentPlayer.PiecePositions[pieceIndex] = newPosition;
+                }
+
+                CapturePiece(currentPlayer, pieceIndex); // Handle capturing logic
+            }
+
+            CheckForWin(currentPlayer); // Check for winning condition
+            NextTurn(); // Move to the next player's turn
         }
 
+        // Handle capturing pieces
+        private void CapturePiece(Player currentPlayer, int pieceIndex)
+        {
+            Player[] players = { redPlayer, yellowPlayer, bluePlayer, greenPlayer };
+
+            foreach (var player in players)
+            {
+                if (player != currentPlayer)
+                {
+                    for (int i = 0; i < player.PiecePositions.Length; i++)
+                    {
+                        if (player.PiecePositions[i] != -1 && player.Path[player.PiecePositions[i]] == currentPlayer.Path[pieceIndex])
+                        {
+                            player.PiecePositions[i] = -1; // Capture the piece and send it back to start
+                            AnimatePieceMovement(player.Pieces[i], player.Pieces[i].TransformToAncestor(this).Transform(new Point(0, 0)), new Point(30, 30));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Get the current player
         private Player GetCurrentPlayer()
         {
             return _currentPlayer switch
@@ -175,14 +218,16 @@ namespace LudoGame
             };
         }
 
+        // Check if the player has won
         private void CheckForWin(Player player)
         {
-            if (player.GoalCount == 1) // Change this if more pieces
+            if (player.GoalCount == player.Pieces.Length)
             {
                 MessageBox.Show($"{GetPlayerColor(player)} Wins!");
             }
         }
 
+        // Get the player's color as a string
         private string GetPlayerColor(Player player)
         {
             if (player == redPlayer) return "Red";
@@ -191,17 +236,22 @@ namespace LudoGame
             return "Green";
         }
 
+        // Move to the next player's turn
         private void NextTurn()
         {
             _currentPlayer = _currentPlayer == 4 ? 1 : _currentPlayer + 1;
             UpdateCurrentPlayerText();
         }
 
-        // New event handler for the 'MoveRedPlayer_Click' error
-        private void MoveRedPlayer_Click(object sender, RoutedEventArgs e)
+        // Example button handlers for moving pieces
+        private void MoveRedPiece1_Click(object sender, RoutedEventArgs e)
         {
-            // This is just a sample action. You can either trigger movement or dice roll here
-            MovePlayerPiece(); // Move red piece (or you can put specific logic for red here)
+            MovePlayerPiece(0); // Move RedPiece1
+        }
+
+        private void MoveRedPiece2_Click(object sender, RoutedEventArgs e)
+        {
+            MovePlayerPiece(1); // Move RedPiece2
         }
     }
 }

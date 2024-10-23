@@ -3,14 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Ludo Game" Height="800" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="777*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="23*"/>
+        </Grid.ColumnDefinitions>
         <!-- Ludo Game Board -->
-        <Canvas Name="LudoCanvas" Background="RosyBrown" Height="600" Width="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Canvas Name="LudoCanvas" Background="RosyBrown" Height="600" Width="600" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0">
 
             <!-- Central Cross (Goal Area) -->
             <Polygon Points="300,300 250,350 350,350" Fill="Red" />
             <Polygon Points="300,300 350,350 350,250" Fill="Green" />
             <Polygon Points="300,300 250,250 350,250" Fill="Yellow" />
             <Polygon Points="300,300 250,250 250,350" Fill="Blue" />
+
+            <!-- Red Player Pieces -->
+            <Ellipse Name="RedPiece1" Width="30" Height="30" Fill="HotPink" Canvas.Left="55" Canvas.Top="420" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece2" Width="30" Height="30" Fill="HotPink" Canvas.Left="153" Canvas.Top="420" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece3" Width="30" Height="30" Fill="HotPink" Canvas.Left="55" Canvas.Top="513" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece4" Width="30" Height="30" Fill="HotPink" Canvas.Left="153" Canvas.Top="513" Panel.ZIndex="10"/>
+
+            <!-- Yellow Player Pieces -->
+            <Ellipse Name="YellowPiece1" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="426" Canvas.Top="55" Panel.ZIndex="10"/>
+            <Ellipse Name="YellowPiece2" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="513" Canvas.Top="55" Panel.ZIndex="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Ellipse Name="YellowPiece3" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="426" Canvas.Top="145" Panel.ZIndex="10"/>
+            <Ellipse Name="YellowPiece4" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="513" Canvas.Top="145" Panel.ZIndex="10"/>
+            
+
+            <!-- Blue Player Pieces -->
+            <Ellipse Name="BluePiece1" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="55" Canvas.Top="55.5" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece2" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="145.5" Canvas.Top="55.5" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece3" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="55" Canvas.Top="145" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece4" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="145.5" Canvas.Top="145.5" Panel.ZIndex="10"/>
+
+            <!-- Green Player Pieces -->
+            <Ellipse Name="GreenPiece1" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="417" Canvas.Top="415" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece2" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="510" Canvas.Top="415" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece3" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="417" Canvas.Top="505" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece4" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="510" Canvas.Top="505" Panel.ZIndex="10"/>
+
 
             <!-- Player Bases with Outer Square -->
             <!-- Red Base (Bottom-Left Corner) -->
@@ -142,11 +173,13 @@
         </Canvas>
 
         <!-- Dice and Player Turn Section -->
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="299,0,0,0">
             <TextBlock Name="CurrentPlayerText" FontSize="24" Text="Current Player: Red" HorizontalAlignment="Center"/>
             
-            <!-- Display Dice with Graphics -->
-            <Image Name="DiceImage" Width="50" Height="50" HorizontalAlignment="Center"/>
+
+            <TextBlock Name="DiceResultText" FontSize="32" Text="Roll: 1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Button Content="Roll Dice" Click="RollDice_Click" Width="100" Height="50" HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>
