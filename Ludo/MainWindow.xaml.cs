@@ -9,10 +9,12 @@ namespace LudoGame
         private Random _random = new Random();
         private int _diceValue;
         private int _currentPlayer = 1; // 1: Red, 2: Yellow, 3: Blue, 4: Green
+        private bool _waitingForPieceSelection = false; // Flag to check if the player is selecting a piece after rolling a 6
 
         public class Player
         {
             public Point[] Path { get; set; } = Array.Empty<Point>();  // Initialize with an empty array
+            public Point StartingBlock { get; set; } // The block where the piece moves when a 6 is rolled
             public Ellipse[] Pieces { get; set; }
             public int[] PiecePositions { get; set; }
             public int GoalCount { get; set; } = 0;
@@ -27,7 +29,6 @@ namespace LudoGame
                 }
             }
         }
-
 
         private Player redPlayer = null!;
         private Player yellowPlayer = null!;
@@ -48,6 +49,18 @@ namespace LudoGame
             yellowPlayer = new Player(4);
             bluePlayer = new Player(4);
             greenPlayer = new Player(4);
+
+            // Define entry positions (starting blocks) for each color
+            redPlayer.StartingBlock = new Point(240, 510);   // Red shifted left
+            yellowPlayer.StartingBlock = new Point(320, 50); // Yellow starts at the top
+            bluePlayer.StartingBlock = new Point(50, 242);   // Blue shifted up
+            greenPlayer.StartingBlock = new Point(510, 322); // Green shifted down
+
+            // Define the path for each player (example, you can adjust based on your board layout)
+            redPlayer.Path = new Point[] { redPlayer.StartingBlock, new Point(280, 470), new Point(280, 430) };
+            yellowPlayer.Path = new Point[] { yellowPlayer.StartingBlock, new Point(280, 90), new Point(280, 130) };
+            bluePlayer.Path = new Point[] { bluePlayer.StartingBlock, new Point(90, 282), new Point(130, 282) };
+            greenPlayer.Path = new Point[] { greenPlayer.StartingBlock, new Point(470, 282), new Point(430, 282) };
 
             // Link UI pieces to player data
             redPlayer.Pieces[0] = RedPiece1;
@@ -70,11 +83,11 @@ namespace LudoGame
             greenPlayer.Pieces[2] = GreenPiece3;
             greenPlayer.Pieces[3] = GreenPiece4;
 
-            // Define paths for each player (simplified paths)
-            redPlayer.Path = new Point[] { new Point(50, 400), new Point(100, 400), new Point(150, 400), new Point(150, 350) };
-            yellowPlayer.Path = new Point[] { new Point(400, 50), new Point(450, 100), new Point(500, 150) };
-            bluePlayer.Path = new Point[] { new Point(50, 50), new Point(100, 50), new Point(150, 50) };
-            greenPlayer.Path = new Point[] { new Point(400, 400), new Point(450, 450), new Point(500, 500) };
+            // Add Mouse Click event handlers to allow piece selection
+            foreach (var piece in redPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
+            foreach (var piece in yellowPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
+            foreach (var piece in bluePlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
+            foreach (var piece in greenPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
         }
 
         // Roll dice and trigger movement
@@ -83,10 +96,22 @@ namespace LudoGame
             _diceValue = _random.Next(1, 7); // Generate dice roll between 1 and 6
             UpdateDiceGraphic(_diceValue);   // Update the dice roll display
 
-            // Example: Move first red piece if 6 is rolled
-            if (_diceValue == 6)
+            if (_diceValue == 6 && IsAnyPieceInStartingArea())
             {
-                MovePlayerPiece(0); // Moves the first red piece (as an example)
+                // If 6 is rolled and there are pieces in the starting area, let the player choose a piece
+                _waitingForPieceSelection = true;
+                MessageBox.Show("You rolled a 6! Select a piece to move out.");
+            }
+            else
+            {
+                // Automatically move the first piece for now (you can extend this to other pieces)
+                MovePlayerPiece(0);
+
+                // If the player rolled a 6, they get another turn.
+                if (_diceValue != 6)
+                {
+                    NextTurn(); // Move to the next player's turn if 6 is not rolled.
+                }
             }
         }
 
@@ -150,6 +175,34 @@ namespace LudoGame
             }
         }
 
+        // Event handler for piece clicks
+        private void Piece_Clicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_waitingForPieceSelection && sender is Ellipse clickedPiece)
+            {
+                // Find which player's piece was clicked and move that piece to the starting block
+                Player currentPlayer = GetCurrentPlayer();
+                for (int i = 0; i < currentPlayer.Pieces.Length; i++)
+                {
+                    if (currentPlayer.Pieces[i] == clickedPiece && currentPlayer.PiecePositions[i] == -1)
+                    {
+                        // Move the piece to its starting block (the first block on the path)
+                        MovePieceToStartingBlock(i);
+                        break;
+                    }
+                }
+                _waitingForPieceSelection = false; // Reset the flag after selecting the piece
+            }
+        }
+
+        // Move the selected piece to the starting block (the first block on the path)
+        private void MovePieceToStartingBlock(int pieceIndex)
+        {
+            Player currentPlayer = GetCurrentPlayer();
+            currentPlayer.PiecePositions[pieceIndex] = 0; // Move out of the starting area
+            AnimatePieceMovement(currentPlayer.Pieces[pieceIndex], new Point(30, 30), currentPlayer.StartingBlock);
+        }
+
         // Move player piece based on dice roll
         private void MovePlayerPiece(int pieceIndex)
         {
@@ -160,8 +213,8 @@ namespace LudoGame
             {
                 if (_diceValue == 6)
                 {
-                    currentPlayer.PiecePositions[pieceIndex] = 0; // Move out of starting area
-                    AnimatePieceMovement(currentPlayer.Pieces[pieceIndex], new Point(30, 30), currentPlayer.Path[0]);
+                    // Move the piece to the starting block
+                    MovePieceToStartingBlock(pieceIndex);
                 }
                 else
                 {
@@ -187,7 +240,6 @@ namespace LudoGame
             }
 
             CheckForWin(currentPlayer); // Check for winning condition
-            NextTurn(); // Move to the next player's turn
         }
 
         // Handle capturing pieces
@@ -250,15 +302,15 @@ namespace LudoGame
             UpdateCurrentPlayerText();
         }
 
-        // Example button handlers for moving pieces
-        private void MoveRedPiece1_Click(object sender, RoutedEventArgs e)
+        // Check if any piece is in the starting area (not yet moved)
+        private bool IsAnyPieceInStartingArea()
         {
-            MovePlayerPiece(0); // Move RedPiece1
-        }
-
-        private void MoveRedPiece2_Click(object sender, RoutedEventArgs e)
-        {
-            MovePlayerPiece(1); // Move RedPiece2
+            Player currentPlayer = GetCurrentPlayer();
+            foreach (int position in currentPlayer.PiecePositions)
+            {
+                if (position == -1) return true; // Found a piece in the starting area
+            }
+            return false;
         }
     }
 }
