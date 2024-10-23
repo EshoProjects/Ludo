@@ -29,10 +29,14 @@ namespace LudoGame
         }
 
 
-        private Player redPlayer, yellowPlayer, bluePlayer, greenPlayer;
+        private Player redPlayer = null!;
+        private Player yellowPlayer = null!;
+        private Player bluePlayer = null!;
+        private Player greenPlayer = null!;
 
         public MainWindow()
         {
+            InitializeComponent();  // This should be called to initialize the XAML components
             InitializePlayers();
             UpdateCurrentPlayerText();
         }
@@ -140,6 +144,8 @@ namespace LudoGame
                     break;
                 case 4:
                     CurrentPlayerText.Text = "Current Player: Green";
+                    break;
+                default:
                     break;
             }
         }
