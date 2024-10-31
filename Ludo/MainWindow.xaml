@@ -9,7 +9,7 @@
             <ColumnDefinition Width="23*"/>
         </Grid.ColumnDefinitions>
         <!-- Ludo Game Board -->
-        <Canvas Name="LudoCanvas" Background="RosyBrown" Height="600" Width="600" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0">
+        <Canvas Name="LudoCanvas" Background="LightSlateGray" Height="600" Width="600" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0">
 
             <!-- Central Cross (Goal Area) -->
             <Polygon Points="300,300 250,350 350,350" Fill="Red" />
@@ -18,29 +18,29 @@
             <Polygon Points="300,300 250,250 250,350" Fill="Blue" />
 
             <!-- Red Player Pieces -->
-            <Ellipse Name="RedPiece1" Width="30" Height="30" Fill="HotPink" Canvas.Left="55" Canvas.Top="420" Panel.ZIndex="10"/>
-            <Ellipse Name="RedPiece2" Width="30" Height="30" Fill="HotPink" Canvas.Left="153" Canvas.Top="420" Panel.ZIndex="10"/>
-            <Ellipse Name="RedPiece3" Width="30" Height="30" Fill="HotPink" Canvas.Left="55" Canvas.Top="513" Panel.ZIndex="10"/>
-            <Ellipse Name="RedPiece4" Width="30" Height="30" Fill="HotPink" Canvas.Left="153" Canvas.Top="513" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece1" Width="30" Height="30" Fill="Coral" Canvas.Left="55" Canvas.Top="420" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece2" Width="30" Height="30" Fill="Coral" Canvas.Left="153" Canvas.Top="420" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece3" Width="30" Height="30" Fill="Coral" Canvas.Left="55" Canvas.Top="513" Panel.ZIndex="10"/>
+            <Ellipse Name="RedPiece4" Width="30" Height="30" Fill="Coral" Canvas.Left="153" Canvas.Top="513" Panel.ZIndex="10"/>
 
             <!-- Yellow Player Pieces -->
-            <Ellipse Name="YellowPiece1" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="426" Canvas.Top="55" Panel.ZIndex="10"/>
-            <Ellipse Name="YellowPiece2" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="513" Canvas.Top="55" Panel.ZIndex="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Ellipse Name="YellowPiece3" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="426" Canvas.Top="145" Panel.ZIndex="10"/>
-            <Ellipse Name="YellowPiece4" Width="30" Height="30" Fill="SaddleBrown" Canvas.Left="513" Canvas.Top="145" Panel.ZIndex="10"/>
+            <Ellipse Name="YellowPiece1" Width="30" Height="30" Fill="Goldenrod" Canvas.Left="426" Canvas.Top="55" Panel.ZIndex="10"/>
+            <Ellipse Name="YellowPiece2" Width="30" Height="30" Fill="Goldenrod" Canvas.Left="513" Canvas.Top="55" Panel.ZIndex="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Ellipse Name="YellowPiece3" Width="30" Height="30" Fill="Goldenrod" Canvas.Left="426" Canvas.Top="145" Panel.ZIndex="10"/>
+            <Ellipse Name="YellowPiece4" Width="30" Height="30" Fill="Goldenrod" Canvas.Left="513" Canvas.Top="145" Panel.ZIndex="10"/>
             
 
             <!-- Blue Player Pieces -->
-            <Ellipse Name="BluePiece1" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="55" Canvas.Top="55.5" Panel.ZIndex="10"/>
-            <Ellipse Name="BluePiece2" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="145.5" Canvas.Top="55.5" Panel.ZIndex="10"/>
-            <Ellipse Name="BluePiece3" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="55" Canvas.Top="145" Panel.ZIndex="10"/>
-            <Ellipse Name="BluePiece4" Width="30" Height="30" Fill="LightSkyBlue" Canvas.Left="145.5" Canvas.Top="145.5" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece1" Width="30" Height="30" Fill="DodgerBlue" Canvas.Left="55" Canvas.Top="55.5" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece2" Width="30" Height="30" Fill="DodgerBlue" Canvas.Left="145.5" Canvas.Top="55.5" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece3" Width="30" Height="30" Fill="DodgerBlue" Canvas.Left="55" Canvas.Top="145" Panel.ZIndex="10"/>
+            <Ellipse Name="BluePiece4" Width="30" Height="30" Fill="DodgerBlue" Canvas.Left="145.5" Canvas.Top="145.5" Panel.ZIndex="10"/>
 
             <!-- Green Player Pieces -->
-            <Ellipse Name="GreenPiece1" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="417" Canvas.Top="415" Panel.ZIndex="10"/>
-            <Ellipse Name="GreenPiece2" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="510" Canvas.Top="415" Panel.ZIndex="10"/>
-            <Ellipse Name="GreenPiece3" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="417" Canvas.Top="505" Panel.ZIndex="10"/>
-            <Ellipse Name="GreenPiece4" Width="30" Height="30" Fill="DarkKhaki" Canvas.Left="510" Canvas.Top="505" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece1" Width="30" Height="30" Fill="LimeGreen" Canvas.Left="417" Canvas.Top="415" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece2" Width="30" Height="30" Fill="LimeGreen" Canvas.Left="510" Canvas.Top="415" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece3" Width="30" Height="30" Fill="LimeGreen" Canvas.Left="417" Canvas.Top="505" Panel.ZIndex="10"/>
+            <Ellipse Name="GreenPiece4" Width="30" Height="30" Fill="LimeGreen" Canvas.Left="510" Canvas.Top="505" Panel.ZIndex="10"/>
 
 
             <!-- Player Bases with Outer Square -->
@@ -54,7 +54,7 @@
                 <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="148" Canvas.Top="109"/>
             </Canvas>
 
-            <!-- Green Base (Top-Right Corner) -->
+            <!-- yellow Base (Top-Right Corner) -->
             <Canvas Canvas.Left="400" Canvas.Top="0">
                 <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Yellow" StrokeThickness="5" HorizontalAlignment="Left" Canvas.Left="-40" VerticalAlignment="Center"/>
                 <Ellipse Fill="Yellow" Width="230" Height="230" Canvas.Left="-35" Canvas.Top="5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -74,7 +74,7 @@
                 <Ellipse Width="40" Height="40" Fill="White" Stroke="Black" StrokeThickness="2" Canvas.Left="140" Canvas.Top="140"/>
             </Canvas>
 
-            <!-- Yellow Base (Bottom-Right Corner) -->
+            <!-- Green Base (Bottom-Right Corner) -->
             <Canvas Canvas.Left="400" Canvas.Top="400">
                 <Rectangle Width="240" Height="240" Fill="Transparent" Stroke="Green" StrokeThickness="5" Canvas.Left="-41" Canvas.Top="-40"/>
                 <Ellipse Fill="Green" Width="230" Height="230" Canvas.Left="-36" Canvas.Top="-35"/>
@@ -92,7 +92,7 @@
             <!-- Top Path -->
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="210"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="170"/>
-            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="130"/>
+            <Rectangle Width="40" Height="40" Fill="Gold" Stroke="Black" Canvas.Left="240" Canvas.Top="130"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="90"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="50"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="10"/>
@@ -106,7 +106,7 @@
 
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="350" Canvas.Top="242"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="390" Canvas.Top="242"/>
-            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="430" Canvas.Top="242"/>
+            <Rectangle Width="40" Height="40" Fill="Gold" Stroke="Black" Canvas.Left="430" Canvas.Top="242"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="470" Canvas.Top="242"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="510" Canvas.Top="242"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="550" Canvas.Top="242" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -120,7 +120,7 @@
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="350" Canvas.Top="322"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="350"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="390"/>
-            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="430"/>
+            <Rectangle Width="40" Height="40" Fill="Gold" Stroke="Black" Canvas.Left="320" Canvas.Top="430"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="470"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="510"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="320" Canvas.Top="550"/>
@@ -134,7 +134,7 @@
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="240" Canvas.Top="350"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="210" Canvas.Top="322"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="170" Canvas.Top="322"/>
-            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="130" Canvas.Top="322"/>
+            <Rectangle Width="40" Height="40" Fill="Gold" Stroke="Black" Canvas.Left="130" Canvas.Top="322"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="90" Canvas.Top="322"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="50" Canvas.Top="322"/>
             <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="10" Canvas.Top="322"/>
@@ -147,6 +147,7 @@
             <Rectangle Width="40" Height="40" Fill="LightGray" Stroke="Black" Canvas.Left="210" Canvas.Top="242"/>
             
             <!--Yellow finalstretch-->
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="280" Canvas.Top="10"/>
             <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="50"/>
             <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="90"/>
             <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="130"/>
@@ -154,6 +155,7 @@
             <Rectangle Width="40" Height="40" Fill="Yellow" Stroke="Black" Canvas.Left="280" Canvas.Top="210"/>
 
             <!--Green finalstretch-->
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="550" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="510" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="470" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="430" Canvas.Top="282"/>
@@ -161,6 +163,7 @@
             <Rectangle Width="40" Height="40" Fill="Green" Stroke="Black" Canvas.Left="350" Canvas.Top="282"/>
 
             <!--Red finalstretch-->
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="280" Canvas.Top="550"/>
             <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="510"/>
             <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="470"/>
             <Rectangle Width="40" Height="40" Fill="Red" Stroke="Black" Canvas.Left="280" Canvas.Top="430"/>
@@ -169,6 +172,7 @@
 
 
             <!--Blue finalstretch-->
+            <Rectangle Width="40" Height="40" Fill="Lightgray" Stroke="Black" Canvas.Left="10" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="50" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="90" Canvas.Top="282"/>
             <Rectangle Width="40" Height="40" Fill="Blue" Stroke="Black" Canvas.Left="130" Canvas.Top="282"/>
@@ -178,13 +182,15 @@
         </Canvas>
 
         <!-- Dice and Player Turn Section -->
+
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="299,0,0,0">
             <TextBlock Name="CurrentPlayerText" FontSize="24" Text="Current Player: Red" HorizontalAlignment="Center"/>
             
 
             <TextBlock Name="DiceResultText" FontSize="32" Text="Roll: 1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="RollDiceButton" Content="Roll Dice" Click="RollDice_Click" Width="100" Height="50" HorizontalAlignment="Center"/>
 
-            <Button Content="Roll Dice" Click="RollDice_Click" Width="100" Height="50" HorizontalAlignment="Center"/>
+            
         </StackPanel>
     </Grid>
 </Window>

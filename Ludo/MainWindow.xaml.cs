@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -15,30 +16,79 @@ namespace LudoGame
         private DispatcherTimer _moveTimer; // Timer to move piece step by step
         private int _remainingSteps; // Tracks how many steps are left to move
         private Ellipse _currentPiece; // The current piece being moved
+        private int _consecutiveSixes = 0; // Counter for consecutive sixes
+
+        // Define the safe points (including additional safe points)
+        private readonly Point[] safePoints = new Point[]
+        {
+            new Point(50, 242),   // Blue safe point
+            new Point(240, 510),  // Red safe point
+            new Point(510, 322),  // Green safe point
+            new Point(320, 50),   // Yellow safe point
+            new Point(240, 130),  // Additional safe point
+            new Point(430, 242),  // Additional safe point
+            new Point(320, 430),  // Additional safe point
+            new Point(130, 322)   // Additional safe point
+        };
+
+        // Dictionary to track the number of pieces on each safe point
+        private readonly Dictionary<Point, int> safePointOccupancy = new Dictionary<Point, int>();
+
+        // Define base positions for each piece in each player's base area
+        private readonly Point[] redBasePositions = new Point[]
+        {
+            new Point(50, 15), new Point(148, 15), new Point(50, 109), new Point(148, 109)
+        };
+
+        private readonly Point[] blueBasePositions = new Point[]
+        {
+            new Point(50, 50), new Point(140, 50), new Point(50, 140), new Point(140, 140)
+        };
+
+        private readonly Point[] yellowBasePositions = new Point[]
+        {
+            new Point(21, 50), new Point(108, 50), new Point(21, 140), new Point(108, 140)
+        };
+
+        private readonly Point[] greenBasePositions = new Point[]
+        {
+            new Point(12, 10), new Point(104, 10), new Point(12, 100), new Point(104, 100)
+        };
 
         public class Player
         {
-            public Point[] MainPath { get; set; } = Array.Empty<Point>();  // Main path on the outer path
+            public Point[] MainPath { get; set; } = Array.Empty<Point>(); // Main path on the outer path
+            public Point[] FinalStretch { get; set; } = Array.Empty<Point>(); // Path leading to home
             public int StartingPositionIndex { get; set; } // The starting position index on the outer path
+            public int FinalStretchEntryIndex { get; set; } // Entry point to the final stretch
             public Ellipse[] Pieces { get; set; }
-            public int[] PiecePositions { get; set; }
+            public int[] PiecePositions { get; set; } // Tracks position on MainPath or FinalStretch
+            public bool[] InFinalStretch { get; set; } // Tracks if a piece is in final stretch
+            public Point[] BasePositions { get; set; } // Specific starting positions in the base area
             public int GoalCount { get; set; } = 0;
 
-            public Player(int pieceCount)
+            public Player(int pieceCount, Point[] basePositions)
             {
                 Pieces = new Ellipse[pieceCount];
                 PiecePositions = new int[pieceCount];
+                InFinalStretch = new bool[pieceCount];
+                BasePositions = basePositions;
+
                 for (int i = 0; i < pieceCount; i++)
                 {
                     PiecePositions[i] = -1; // Initially, all pieces are off the board
+                    InFinalStretch[i] = false; // Not in final stretch initially
                 }
             }
+
+            // Check if all pieces are off the board (only available for re-entry with a 6)
+            public bool AllPiecesOffBoard() => Array.TrueForAll(PiecePositions, pos => pos == -1);
         }
 
-        private Player redPlayer = null!;
-        private Player bluePlayer = null!;
-        private Player yellowPlayer = null!;
-        private Player greenPlayer = null!;
+        private Player redPlayer;
+        private Player bluePlayer;
+        private Player yellowPlayer;
+        private Player greenPlayer;
 
         // Define the outer path (anti-clockwise path for all pieces)
         private readonly Point[] outerPath = new Point[]
@@ -61,6 +111,27 @@ namespace LudoGame
             new Point(90, 242), new Point(130, 242), new Point(170, 242), new Point(210, 242)
         };
 
+        // Final stretches for each player
+        private readonly Point[] redFinalStretch = new Point[]
+        {
+            new Point(280, 550), new Point(280, 510), new Point(280, 470), new Point(280, 430), new Point(280, 390), new Point(280, 350)
+        };
+
+        private readonly Point[] blueFinalStretch = new Point[]
+        {
+            new Point(10, 282), new Point(50, 282), new Point(90, 282), new Point(130, 282), new Point(170, 282), new Point(210, 282)
+        };
+
+        private readonly Point[] yellowFinalStretch = new Point[]
+        {
+            new Point(280, 10), new Point(280, 50), new Point(280, 90), new Point(280, 130), new Point(280, 170), new Point(280, 210)
+        };
+
+        private readonly Point[] greenFinalStretch = new Point[]
+        {
+            new Point(550, 282), new Point(510, 282), new Point(470, 282), new Point(430, 282), new Point(390, 282), new Point(350, 282)
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -78,25 +149,33 @@ namespace LudoGame
         // Initialize players and their paths
         private void InitializePlayers()
         {
-            redPlayer = new Player(4)
+            redPlayer = new Player(4, redBasePositions)
             {
-                StartingPositionIndex = 34, // Start position for the red player on the outer path
-                MainPath = outerPath
+                StartingPositionIndex = 34,
+                FinalStretchEntryIndex = 32,
+                MainPath = outerPath,
+                FinalStretch = redFinalStretch
             };
-            bluePlayer = new Player(4)
+            bluePlayer = new Player(4, blueBasePositions)
             {
-                StartingPositionIndex = 47, // Start position for the blue player on the outer path
-                MainPath = outerPath
+                StartingPositionIndex = 47,
+                FinalStretchEntryIndex = 45,
+                MainPath = outerPath,
+                FinalStretch = blueFinalStretch
             };
-            yellowPlayer = new Player(4)
+            yellowPlayer = new Player(4, yellowBasePositions)
             {
-                StartingPositionIndex = 8, // Start position for the yellow player on the outer path
-                MainPath = outerPath
+                StartingPositionIndex = 8,
+                FinalStretchEntryIndex = 6,
+                MainPath = outerPath,
+                FinalStretch = yellowFinalStretch
             };
-            greenPlayer = new Player(4)
+            greenPlayer = new Player(4, greenBasePositions)
             {
-                StartingPositionIndex = 21, // Start position for the green player on the outer path
-                MainPath = outerPath
+                StartingPositionIndex = 21,
+                FinalStretchEntryIndex = 19,
+                MainPath = outerPath,
+                FinalStretch = greenFinalStretch
             };
 
             // Link UI pieces to player data
@@ -120,42 +199,48 @@ namespace LudoGame
             greenPlayer.Pieces[2] = GreenPiece3;
             greenPlayer.Pieces[3] = GreenPiece4;
 
-            // Add Mouse Click event handlers to allow piece selection
             foreach (var piece in redPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
             foreach (var piece in bluePlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
             foreach (var piece in yellowPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
             foreach (var piece in greenPlayer.Pieces) piece.MouseLeftButtonUp += Piece_Clicked;
         }
 
-        // Roll dice and trigger movement
         private void RollDice_Click(object sender, RoutedEventArgs e)
         {
-            if (_waitingForPieceSelection)
-                return; // Prevent rerolling during a turn
-
-            _diceValue = _random.Next(1, 7); // Roll dice between 1 and 6
+            if (_waitingForPieceSelection) return;
+            _diceValue = _random.Next(1, 7);
             UpdateDiceGraphic(_diceValue);
 
-            _waitingForPieceSelection = true; // Allow the player to select a piece
+            // Handle consecutive sixes logic
+            if (_diceValue == 6)
+            {
+                _consecutiveSixes++;
+                if (_consecutiveSixes == 3)
+                {
+                    MessageBox.Show("Three consecutive sixes rolled. Skipping turn!", "Turn Skipped");
+                    _consecutiveSixes = 0;
+                    NextTurn();
+                    return;
+                }
+            }
+            else
+            {
+                _consecutiveSixes = 0;
+            }
+
+            _waitingForPieceSelection = true;
 
             Player currentPlayer = GetCurrentPlayer();
             if (!CanMovePiece(currentPlayer))
             {
                 _waitingForPieceSelection = false;
-
-                // Switch to the next turn only if the dice value is not 6
-                if (_diceValue != 6)
-                {
-                    NextTurn();
-                }
+                if (_diceValue != 6) NextTurn();
             }
         }
 
         private bool CanMovePiece(Player player)
         {
-            foreach (var pos in player.PiecePositions)
-                if (pos != -1 || _diceValue == 6) return true;
-            return false;
+            return player.AllPiecesOffBoard() ? _diceValue == 6 : true;
         }
 
         private void UpdateDiceGraphic(int diceValue)
@@ -186,16 +271,9 @@ namespace LudoGame
         private void MovePieceToColorBlock(int pieceIndex)
         {
             Player currentPlayer = GetCurrentPlayer();
-
-            // Move the piece to the player's starting position on the outer path
             Point startPosition = currentPlayer.MainPath[currentPlayer.StartingPositionIndex];
-            AnimatePieceMovement(
-                currentPlayer.Pieces[pieceIndex],
-                currentPlayer.Pieces[pieceIndex].TransformToAncestor(this).Transform(new Point(30, 30)),
-                startPosition
-            );
+            AnimatePieceMovement(currentPlayer.Pieces[pieceIndex], startPosition);
 
-            // Update the piece's position to the starting index
             currentPlayer.PiecePositions[pieceIndex] = currentPlayer.StartingPositionIndex;
         }
 
@@ -211,48 +289,110 @@ namespace LudoGame
             if (_remainingSteps <= 0)
             {
                 _moveTimer.Stop();
-
-                // Check if the dice value is not 6 to determine if we switch turns
-                if (_diceValue != 6)
-                {
-                    NextTurn();
-                }
-
+                ResolveEndOfTurnCollision();
+                if (_diceValue != 6) NextTurn();
                 return;
             }
 
             Player currentPlayer = GetCurrentPlayer();
             int pieceIndex = Array.IndexOf(currentPlayer.Pieces, _currentPiece);
 
-            int currentPosition = currentPlayer.PiecePositions[pieceIndex];
-            int newPosition = (currentPosition + 1) % outerPath.Length;
-
-            if (currentPosition != newPosition)
+            if (currentPlayer.InFinalStretch[pieceIndex])
             {
-                Point startPosition = outerPath[currentPosition];
+                MoveOnFinalStretch(currentPlayer, pieceIndex);
+            }
+            else
+            {
+                int currentPosition = currentPlayer.PiecePositions[pieceIndex];
+                int newPosition = (currentPosition + 1) % outerPath.Length;
                 Point endPosition = outerPath[newPosition];
 
-                AnimatePieceMovement(_currentPiece, startPosition, endPosition);
+                AnimatePieceMovement(_currentPiece, endPosition, IsSafePoint(endPosition));
                 currentPlayer.PiecePositions[pieceIndex] = newPosition;
 
-                _remainingSteps--;
+                if (newPosition == currentPlayer.FinalStretchEntryIndex)
+                {
+                    currentPlayer.InFinalStretch[pieceIndex] = true;
+                    currentPlayer.PiecePositions[pieceIndex] = 0;
+                    MoveOnFinalStretch(currentPlayer, pieceIndex);
+                }
+            }
+
+            _remainingSteps--;
+        }
+
+        private void ResolveEndOfTurnCollision()
+        {
+            Player currentPlayer = GetCurrentPlayer();
+            Point currentPiecePosition = currentPlayer.MainPath[currentPlayer.PiecePositions[Array.IndexOf(currentPlayer.Pieces, _currentPiece)]];
+
+            foreach (var player in new[] { redPlayer, bluePlayer, yellowPlayer, greenPlayer })
+            {
+                if (player == currentPlayer) continue;
+
+                for (int i = 0; i < player.Pieces.Length; i++)
+                {
+                    if (player.PiecePositions[i] != -1 && !player.InFinalStretch[i])
+                    {
+                        Point piecePosition = player.MainPath[player.PiecePositions[i]];
+                        if (piecePosition == currentPiecePosition && !IsSafePoint(piecePosition))
+                        {
+                            player.PiecePositions[i] = -1;
+                            AnimatePieceMovement(player.Pieces[i], player.BasePositions[i]);
+                        }
+                    }
+                }
             }
         }
 
-        private void AnimatePieceMovement(Ellipse piece, Point startPosition, Point endPosition)
+        private void MoveOnFinalStretch(Player player, int pieceIndex)
+        {
+            int currentPosition = player.PiecePositions[pieceIndex];
+            if (currentPosition >= player.FinalStretch.Length - 1)
+            {
+                player.GoalCount++;
+                AnimatePieceMovement(player.Pieces[pieceIndex], player.FinalStretch[currentPosition]);
+                player.PiecePositions[pieceIndex] = -2;
+
+                if (player.GoalCount == 4)
+                {
+                    MessageBox.Show($"{GetPlayerColor(player)} wins the game!", "Game Over");
+                }
+
+                return;
+            }
+
+            int newPosition = currentPosition + 1;
+            Point endPosition = player.FinalStretch[newPosition];
+            AnimatePieceMovement(player.Pieces[pieceIndex], endPosition);
+            player.PiecePositions[pieceIndex] = newPosition;
+        }
+
+        private bool IsSafePoint(Point position) => Array.Exists(safePoints, p => p == position);
+
+        private void AnimatePieceMovement(Ellipse piece, Point endPosition, bool isSafePoint = false)
         {
             var duration = 0.5;
-            double tileSize = 30;  // Updated tile size
-            double pieceSize = 20; // Piece size (width and height)
+            double tileSize = 40;
+            double pieceSize = isSafePoint ? 20 : 30;
 
-            // Calculate centered position for each tile
+            if (isSafePoint)
+            {
+                int occupancyCount = safePointOccupancy.ContainsKey(endPosition) ? safePointOccupancy[endPosition] : 0;
+                safePointOccupancy[endPosition] = occupancyCount + 1;
+
+                double xOffset = (occupancyCount % 2) * 10 - 5; // Offset in X
+                double yOffset = (occupancyCount / 2) * 10 - 5; // Offset in Y
+                endPosition.Offset(xOffset, yOffset);
+            }
+
+            piece.Width = piece.Height = pieceSize;
+
             double offset = (tileSize - pieceSize) / 2;
-            startPosition = new Point(startPosition.X + offset, startPosition.Y + offset);
             endPosition = new Point(endPosition.X + offset, endPosition.Y + offset);
 
             DoubleAnimation moveX = new()
             {
-                From = startPosition.X,
                 To = endPosition.X,
                 Duration = new Duration(TimeSpan.FromSeconds(duration)),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
@@ -260,7 +400,6 @@ namespace LudoGame
 
             DoubleAnimation moveY = new()
             {
-                From = startPosition.Y,
                 To = endPosition.Y,
                 Duration = new Duration(TimeSpan.FromSeconds(duration)),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
@@ -304,5 +443,14 @@ namespace LudoGame
                 _ => throw new InvalidOperationException("Invalid player")
             };
         }
+
+        private string GetPlayerColor(Player player) => player switch
+        {
+            var p when p == redPlayer => "Red",
+            var p when p == bluePlayer => "Blue",
+            var p when p == yellowPlayer => "Yellow",
+            var p when p == greenPlayer => "Green",
+            _ => "Unknown"
+        };
     }
 }
